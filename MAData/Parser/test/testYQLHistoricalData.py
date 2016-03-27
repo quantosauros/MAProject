@@ -9,6 +9,8 @@ from Parser.util.DataCollector import DataCollector
 startDate = "2016-01-01"
 endDate = "2016-04-01"
 
-instrumentType = DataCollector.INDEX
+instrumentType = DataCollector.ETF
 
 DataCollector.getHistoricalData(startDate, endDate, instrumentType)
+
+

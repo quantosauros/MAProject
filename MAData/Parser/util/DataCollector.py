@@ -95,6 +95,46 @@ class DataCollector(object):
                 print tickerStr, dateStr, openStr, closeStr, lowStr, highStr, volumeStr
     
     @staticmethod
+    def getHistoricalDataByTicker(startDate, endDate, tickerStr, instrumentType):
+        yahooApi = Share(tickerStr)
+            
+        result = yahooApi.get_historical(startDate, endDate)
+        
+        for dateIndex in range(0, len(result)) :
+            dateStr = result[dateIndex]['Date'].replace("-", "")
+            openStr = result[dateIndex]['Open']
+            closeStr = result[dateIndex]['Close']
+            lowStr = result[dateIndex]['Low']
+            highStr = result[dateIndex]['High']
+            volumeStr = result[dateIndex]['Volume']
+            
+            if instrumentType is DataCollector.FX :
+                p = FxData(ticker = tickerStr, dt = dateStr, 
+                        price_close = closeStr, price_open = openStr,
+                        price_high = highStr, price_low = lowStr,
+                        volume = volumeStr)
+            elif instrumentType is DataCollector.ETF :
+                p = EtfData(ticker = tickerStr, dt = dateStr, 
+                        price_close = closeStr, price_open = openStr,
+                        price_high = highStr, price_low = lowStr,
+                        volume = volumeStr)
+            elif instrumentType is DataCollector.STOCK :
+                p = StockData(ticker = tickerStr, dt = dateStr, 
+                        price_close = closeStr, price_open = openStr,
+                        price_high = highStr, price_low = lowStr,
+                        volume = volumeStr)
+            elif instrumentType is DataCollector.INDEX :
+                p = IndexData(ticker = tickerStr, dt = dateStr, 
+                        price_close = closeStr, price_open = openStr,
+                        price_high = highStr, price_low = lowStr,
+                        volume = volumeStr)
+            
+            #p.save()
+            
+            print tickerStr, dateStr, openStr, closeStr, lowStr, highStr, volumeStr
+
+    
+    @staticmethod
     def getStockDetailData():
         
         tickerLists = StockInfo.objects.values('ticker', 'name')        

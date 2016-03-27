@@ -57,6 +57,43 @@ class EtfInfo(models.Model):
     class Meta:
         managed = False
         db_table = 'ETF_INFO'
+        
+class FuturesData(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    overnight_cd = models.CharField(db_column='OVERNIGHT_CD', max_length=2, blank=True, null=True)  # Field name made lowercase.
+    close_price = models.FloatField(db_column='CLOSE_PRICE', blank=True, null=True)  # Field name made lowercase.
+    open_price = models.FloatField(db_column='OPEN_PRICE', blank=True, null=True)  # Field name made lowercase.
+    high_price = models.FloatField(db_column='HIGH_PRICE', blank=True, null=True)  # Field name made lowercase.
+    low_price = models.FloatField(db_column='LOW_PRICE', blank=True, null=True)  # Field name made lowercase.
+    volume = models.IntegerField(db_column='VOLUME', blank=True, null=True)  # Field name made lowercase.
+    settlement_price = models.FloatField(db_column='SETTLEMENT_PRICE', blank=True, null=True)  # Field name made lowercase.
+    spot_price = models.FloatField(db_column='SPOT_PRICE', blank=True, null=True)  # Field name made lowercase.
+    outstanding_volume = models.IntegerField(db_column='OUTSTANDING_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'FUTURES_DATA'
+        unique_together = (('DT', 'TICKER', 'OVERNIGHT_CD'),)
+
+
+class FuturesInfo(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', unique=True, max_length=45, blank=True, null=True)  # Field name made lowercase.
+    name = models.CharField(db_column='NAME', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    short_ticker = models.CharField(db_column='SHORT_TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    expire_dt = models.CharField(db_column='EXPIRE_DT', max_length=6, blank=True, null=True)  # Field name made lowercase.
+    spread_type = models.CharField(db_column='SPREAD_TYPE', max_length=2, blank=True, null=True)  # Field name made lowercase.
+    type_cd = models.CharField(db_column='TYPE_CD', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'FUTURES_INFO'
 
 
 class FxData(models.Model):
