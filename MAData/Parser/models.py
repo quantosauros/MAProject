@@ -94,6 +94,24 @@ class FuturesInfo(models.Model):
     class Meta:
         managed = False
         db_table = 'FUTURES_INFO'
+        
+class FuturesInvestor(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    overnight_cd = models.CharField(db_column='OVERNIGHT_CD', max_length=2, blank=True, null=True)  # Field name made lowercase.
+    investor_cd = models.CharField(db_column='INVESTOR_CD', max_length=4, blank=True, null=True)  # Field name made lowercase.
+    buy_amount = models.FloatField(db_column='BUY_AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    buy_volume = models.FloatField(db_column='BUY_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    sell_amount = models.FloatField(db_column='SELL_AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    sell_volume = models.FloatField(db_column='SELL_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'FUTURES_INVESTOR'
+        unique_together = (('DT', 'TICKER', 'OVERNIGHT_CD', 'INVESTOR_CD'),)
 
 
 class FxData(models.Model):
