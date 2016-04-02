@@ -177,6 +177,17 @@ class IndexInfo(models.Model):
         managed = False
         db_table = 'INDEX_INFO'
 
+class InvestorInfo(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    code = models.CharField(db_column='CODE', unique=True, max_length=10, blank=True, null=True)  # Field name made lowercase.
+    name = models.CharField(db_column='NAME', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'INVESTOR_INFO'
+
 class IrData(models.Model):
     idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
     dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
@@ -217,6 +228,9 @@ class StockData(models.Model):
     price_high = models.FloatField(db_column='PRICE_HIGH', blank=True, null=True)  # Field name made lowercase.
     price_low = models.FloatField(db_column='PRICE_LOW', blank=True, null=True)  # Field name made lowercase.
     volume = models.FloatField(db_column='VOLUME', blank=True, null=True)  # Field name made lowercase.
+    amount = models.BigIntegerField(db_column='AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    marketcap = models.BigIntegerField(db_column='MARKETCAP', blank=True, null=True)  # Field name made lowercase.
+    listed_shares = models.IntegerField(db_column='LISTED_SHARES', blank=True, null=True)  # Field name made lowercase.
     #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
     #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
 
@@ -252,10 +266,12 @@ class StockDetail(models.Model):
 class StockInfo(models.Model):
     idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
     ticker = models.CharField(db_column='TICKER', unique=True, max_length=45, blank=True, null=True)  # Field name made lowercase.
+    short_ticker = models.CharField(db_column='SHORT_TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.    
     name = models.CharField(db_column='NAME', max_length=255, blank=True, null=True)  # Field name made lowercase.
     exchange = models.CharField(db_column='EXCHANGE', max_length=10, blank=True, null=True)  # Field name made lowercase.
     country = models.CharField(db_column='COUNTRY', max_length=10, blank=True, null=True)  # Field name made lowercase.
     ccy_cd = models.CharField(db_column='CCY_CD', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    data_source = models.CharField(db_column='DATA_SOURCE', max_length=5, blank=True, null=True)  # Field name made lowercase.
     #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
     #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
 
@@ -263,6 +279,39 @@ class StockInfo(models.Model):
         managed = False
         db_table = 'STOCK_INFO'
 
+class StockInvestor(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    investor_cd = models.CharField(db_column='INVESTOR_CD', max_length=4, blank=True, null=True)  # Field name made lowercase.
+    buy_amount = models.BigIntegerField(db_column='BUY_AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    buy_volume = models.IntegerField(db_column='BUY_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    sell_amount = models.BigIntegerField(db_column='SELL_AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    sell_volume = models.IntegerField(db_column='SELL_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'STOCK_INVESTOR'
+        unique_together = (('DT', 'TICKER', 'INVESTOR_CD'),)
+
+class StockShort(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    volume = models.IntegerField(db_column='VOLUME', blank=True, null=True)  # Field name made lowercase.
+    amount = models.BigIntegerField(db_column='AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    total_volume = models.IntegerField(db_column='TOTAL_VOLUME', blank=True, null=True)  # Field name made lowercase.
+    total_amount = models.BigIntegerField(db_column='TOTAL_AMOUNT', blank=True, null=True)  # Field name made lowercase.
+    total_shares = models.BigIntegerField(db_column='TOTAL_SHARES', blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'STOCK_SHORT'
+        unique_together = (('DT', 'TICKER'),)
 
 class XpathData(models.Model):
     idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.

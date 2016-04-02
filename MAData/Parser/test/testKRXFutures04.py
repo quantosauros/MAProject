@@ -9,17 +9,18 @@ import json
 from Parser.models import FuturesInfo
 #개별주식선물 리스트
 
-yearStr = '2015'
+yearStr = '2016'
 
-listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo2&name=selectbox'
+#코스피 주식선물
+#listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo2&name=selectbox'
+#코스닥 주식선물
+listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo5&name=selectbox'
 listcodeR = urllib2.Request(listcodeAddress)
 listcodeU = urllib2.urlopen(listcodeR)
 listcodeStr = listcodeU.read()
 
-listmktselStr = 'FKQ' # FST:코스피주식선물 FKQ:코스닥주식선물
 listAddress = 'http://marketdata.krx.co.kr/contents/MKD/99/MKD99000001.jspx?' +\
-    'code=' + listcodeStr +\
-    '&mktsel=' + listmktselStr
+    'code=' + listcodeStr
     
 listR = urllib2.Request(listAddress)
 listU = urllib2.urlopen(listR)

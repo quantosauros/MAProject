@@ -7,13 +7,13 @@ Created on 2016. 3. 24.
 import urllib2
 import json
 from Parser.models import FuturesData, FuturesInfo
-from Parser.util.DataCollector import DataCollector
+
 #선물 히스토리 데이터
 fromdateStr = '20000101'
 todateStr = '20160327'
 
 #tickerLists = FuturesInfo.objects.filter(expire_dt__gte ='201512').order_by('expire_dt')
-tickerLists = FuturesInfo.objects.filter(type_cd__contains = 'KRDRVFUS').order_by('expire_dt')
+tickerLists = FuturesInfo.objects.filter(type_cd__contains = 'KRDRVFUS').filter(expire_dt__contains ='2015').order_by('expire_dt')
 #tickerLists = FuturesInfo.objects.filter().order_by('expire_dt')
 
 for tic in tickerLists :

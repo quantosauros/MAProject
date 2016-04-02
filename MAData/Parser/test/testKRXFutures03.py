@@ -127,7 +127,7 @@ for idx in range(0,len(typeCdLists)):
             elif gubunStr.encode('utf-8') == '외국인' :
                 codeStr = 'FORE'
             elif gubunStr.encode('utf-8') == '합계' :
-                break
+                continue
             
             #OVERNIGHT_CD
             overnightCdStr ='N'
