@@ -99,7 +99,7 @@ class Date():
             
             return daycountYear - dayCount + dayCount2
         else :
-            -date.getDays(this) 
+            return -date.getDays(self) 
         
     
     def getDayCountOfYear(self):

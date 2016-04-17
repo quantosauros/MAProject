@@ -9,8 +9,9 @@ import urllib2
 import json
 from Parser.models import StockShort, StockInfo
 
-tickerLists = StockInfo.objects.filter(data_source = 'KRX').filter(exchange = 'KOSPI')
-periodstrtddStr = '20160101'
+#tickerLists = StockInfo.objects.filter(data_source = 'KRX').filter(exchange = 'KOSPI')
+tickerLists = StockInfo.objects.filter(data_source = 'KRX')
+periodstrtddStr = '20060101'
 periodendddStr = '20160331'
 
 for tic in tickerLists : 
@@ -59,5 +60,8 @@ for tic in tickerLists :
         resultDic['total_amount'] = totalvalueStr
         resultDic['total_shares'] = totalshareStr
         
-        p = StockShort(**resultDic)
-        p.save()
+        p, created  = StockShort.objects.get_or_create(dt = dtStr,
+                                                       ticker = isucdStr,
+                                                       defaults = resultDic)
+        if not created : 
+            p.save()

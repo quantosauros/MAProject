@@ -14,7 +14,7 @@ from Parser.util.time.BusinessDayConvention import BusinessDayConvention
 
 calendar = SouthKoreaCalendar.getCalendar(1)
 
-typeCdLists = ['KRDRVFUKGDSP',
+typeCdLists = ['KRDRVFUUSD',
                ]
 
 
@@ -26,9 +26,11 @@ typeCdLists = ['KRDRVFUKGDSP',
 #                'KRDRVFUBM3', 'KRDRVFUBM3SP',
 #                'KRDRVFUCNH', 'KRDRVFUCNHSP',
 #                'KRDRVFUKGD', 'KRDRVFUKGDSP'
+#야간                                    'KRDRVFUK2I', 'KRDRVFUUSD'
 #                ]
 
-startDtLists = ['20151123',]
+
+startDtLists = ['20141208',]
 # startDtLists = ['20050311', '20051209',
 #                '20050315', '20070827',
 #                '20060526', '20070827',
@@ -36,7 +38,8 @@ startDtLists = ['20151123',]
 #                '20101025', '20101025',
 #                '20101025', '20101222',
 #                '20151005', '20151005',
-#                '20151123', '20151123'                
+#                '20151123', '20151123'     
+#야간                                    '20091116', '20141208'
 #                 ]
 
 endDate = calendar.adjustDate(Date.valueOf('20160325'),
@@ -57,7 +60,7 @@ for idx in range(0,len(typeCdLists)):
         todtStr = processDate.getDt()
         startDtStr = '20160328'
         #prtTypeStr = 'V' #'V' D:거래량, V:거래대금
-        juyaStr = '0' #주간0/야간1/전체on
+        juyaStr = '1' #주간0/야간1/전체on
         
         codeAddressStr = "http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=MKD%2F10%2F1004%2F10040301%2Fmkd10040301_01&name=form"
         codeR = urllib2.Request(codeAddressStr)

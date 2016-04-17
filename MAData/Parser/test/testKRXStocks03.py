@@ -10,41 +10,48 @@ import json
 from Parser.util.time.calendar.SouthKoreaCalendar import SouthKoreaCalendar
 from Parser.util.time.Date import Date
 from Parser.util.time.BusinessDayConvention import BusinessDayConvention
+from django.db.models.aggregates import Min
 
 #주식 투자자별 거래실적
 
-# p, created = StockData.objects.get_or_create(dt ='20160329', 
-#                                              ticker = 'KR7095570008')
-# 
-# 
-# if not created : 
-#     p.price_open = '123'
-
-tickerLists = StockInfo.objects.filter(data_source = 'KRX').filter(exchange = 'KOSPI')
+#tickerLists = StockInfo.objects.filter(data_source = 'KRX').filter(exchange = 'KOSPI').filter(idx__gte = '1428')
+#tickerLists = StockInfo.objects.filter(data_source = 'KRX') #.filter(idx__gte = '1109')
+tickerLists = StockData.objects.values('ticker').annotate(numm = Min('dt', distinct=True))
 
 calendar = SouthKoreaCalendar.getCalendar(1)
 
-startDate = calendar.adjustDate(Date.valueOf('20160102'),
+startDate = calendar.adjustDate(Date.valueOf('20120101'),
                                     BusinessDayConvention.FOLLOWING)
 
-endDate = calendar.adjustDate(Date.valueOf('20160331'),
+endDate = calendar.adjustDate(Date.valueOf('20121231'),
                               BusinessDayConvention.FOLLOWING)
 
+# endDate = calendar.adjustDate(Date.valueOf('20160331'),
+#                               BusinessDayConvention.FOLLOWING)
 
-for tic in tickerLists :
-    
-    isuCdStr = tic.ticker            
-    periodselectorStr = 'day'
+processDate = startDate
 
-    processDate = startDate
+while processDate.diff(endDate) <= 0 :
+    for tic in tickerLists :
+        print tic['ticker'], tic['numm']
         
-    while processDate.diff(endDate) <= 0 :
+        firstDt = Date.valueOf(str(tic['numm']))
+        print firstDt.getDate()            
+        if processDate.diff(firstDt) < 0 :
+            continue
+        
+        isuCdStr = tic['ticker']            
+        periodselectorStr = 'day'    
         
         codeAddressStr = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=MKD%2F10%2F1002%2F10020101%2Fmkd10020101&name=form'
         codeR = urllib2.Request(codeAddressStr)
-        codeU = urllib2.urlopen(codeR)
-        codeStr = codeU.read()
-           
+        try :
+            codeU = urllib2.urlopen(codeR)
+            codeStr = codeU.read()
+        except : 
+            codeU = urllib2.urlopen(codeR)
+            codeStr = codeU.read()
+               
         fromdateStr = processDate.getDt()
         todate = processDate.getDt()
         
@@ -58,11 +65,13 @@ for tic in tickerLists :
         print address
             
         r = urllib2.Request(address)
-            
-        u = urllib2.urlopen(r)
         
-        response = u.read()
-        
+        try:
+            u = urllib2.urlopen(r)        
+            response = u.read()
+        except : 
+            u = urllib2.urlopen(r)        
+            response = u.read()
         
         result = json.loads(response)['block1']
         
@@ -129,10 +138,12 @@ for tic in tickerLists :
             resultDic['buy_volume'] = buyvolumeStr
             resultDic['sell_amount'] = sellamountStr
             resultDic['sell_volume'] = sellvolumeStr
-             
-            p = StockInvestor(**resultDic)
-            p.save()
             
-    
-        processDate = calendar.adjustDate(processDate.plusDays(1),
-                                              BusinessDayConvention.FOLLOWING)
+            p, created = StockInvestor.objects.get_or_create(dt = processDate.getDt(), ticker = isuCdStr,
+                                                            investor_cd = codeStr,
+                                                            defaults = resultDic) 
+            if not created : 
+                p.save() 
+            
+    processDate = calendar.adjustDate(processDate.plusDays(1),
+                                          BusinessDayConvention.FOLLOWING)

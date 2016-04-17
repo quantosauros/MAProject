@@ -10,7 +10,7 @@ from Parser.models import StockData, StockInfo
 
 #주식 히스토리 주가 데이터
 
-fromdateStr = '20160101'
+fromdateStr = '20060102'
 todateStr = '20160331'
 dategubunStr = '2' #1 : 실시간, 2: 일별, 3:월별
 

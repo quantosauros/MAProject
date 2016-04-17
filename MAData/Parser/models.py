@@ -313,6 +313,20 @@ class StockShort(models.Model):
         db_table = 'STOCK_SHORT'
         unique_together = (('DT', 'TICKER'),)
 
+class StockSuspension(models.Model):
+    idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
+    dt = models.CharField(db_column='DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    ticker = models.CharField(db_column='TICKER', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    start_dt = models.CharField(db_column='START_DT', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    reason = models.CharField(db_column='REASON', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    #crtn_time = models.DateTimeField(db_column='CRTN_TIME', blank=True, null=True)  # Field name made lowercase.
+    #update_time = models.DateTimeField(db_column='UPDATE_TIME', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'stock_suspension'
+        unique_together = (('DT', 'TICKER'),)
+
 class XpathData(models.Model):
     idx = models.AutoField(db_column='IDX', primary_key=True)  # Field name made lowercase.
     code = models.CharField(db_column='CODE', unique=True, max_length=45, blank=True, null=True)  # Field name made lowercase.

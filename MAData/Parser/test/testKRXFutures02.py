@@ -13,7 +13,7 @@ fromdateStr = '20000101'
 todateStr = '20160327'
 
 #tickerLists = FuturesInfo.objects.filter(expire_dt__gte ='201512').order_by('expire_dt')
-tickerLists = FuturesInfo.objects.filter(type_cd__contains = 'KRDRVFUS').filter(expire_dt__contains ='2015').order_by('expire_dt')
+tickerLists = FuturesInfo.objects.filter(type_cd__contains = 'KRDRVFUS').order_by('expire_dt')
 #tickerLists = FuturesInfo.objects.filter().order_by('expire_dt')
 
 for tic in tickerLists :
@@ -33,16 +33,17 @@ for tic in tickerLists :
     print address
     
     r = urllib2.Request(address)
+    try : 
+        u = urllib2.urlopen(r)    
+        response = u.read()
+    except:
+        u = urllib2.urlopen(r)    
+        response = u.read()
         
-    u = urllib2.urlopen(r)
-    
-    response = u.read()
-    
     #print response
     
     result = json.loads(response)['block1']
-    
-    
+        
     idx = 0
     maxlen = len(result)
     for x in result :         
@@ -80,8 +81,13 @@ for tic in tickerLists :
         resultDic['outstanding_volume'] = outstandingStr
         resultDic['overnight_cd'] = overnightCdStr
         
-        p = FuturesData(**resultDic)
+        p, created = FuturesData.objects.get_or_create(dt = dtStr,
+                                                       ticker = isucdStr,
+                                                       defaults = resultDic)
+        if not created : 
+            p.save()
+            
         idx += 1
-        p.save()
+        
         
         

@@ -12,9 +12,9 @@ from Parser.models import FuturesInfo
 yearStr = '2016'
 
 #코스피 주식선물
-#listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo2&name=selectbox'
+listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo2&name=selectbox'
 #코스닥 주식선물
-listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo5&name=selectbox'
+#listcodeAddress = 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx?bld=COM%2Ffinder_fuisu_combo5&name=selectbox'
 listcodeR = urllib2.Request(listcodeAddress)
 listcodeU = urllib2.urlopen(listcodeR)
 listcodeStr = listcodeU.read()

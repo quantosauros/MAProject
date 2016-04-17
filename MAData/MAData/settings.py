@@ -80,7 +80,8 @@ DATABASES = {
         'NAME': 'MADB',
         'USER': 'root',
         'PASSWORD':'1qaz2wsx',
-        'HOST':'61.96.111.175',
+        #'HOST':'61.96.111.175',
+        'HOST':'localhost',
         'PORT':'3306',
     }
 }
